@@ -1,24 +1,36 @@
 const express = require("express");
 
+const mediaLibrary = require("./mediaLibrary")
+const response = require('./responseBuilder')
+
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use(function (req, res, next) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  res.setHeader("Access-Control-Allow-Credentials", true);
+  next();
+});
+
 const port = 3000;
 
-const library = {
-  movies: 32,
-  books: 235882,
-  games: 2,
-};
 
-app.get("/healthcheck", (req, res) => res.send("Yep läuft"));
+app.get("/healthcheck", (req, res) => response(res, 200, {message: "läuft"}));
 
 app.get("/library", (req, res) => {
   const mediaType = req.query.type;
 
   return res.send(
-    `The media type ${mediaType} has ${library[mediaType]} units`
+    `The media type ${mediaType} has ${mediaLibrary.getCountForMediaType(mediaType)} units`
   );
 });
 
@@ -28,5 +40,7 @@ app.post("/printname", (req, res) => {
 
   return res.send(`name: ${name}, age: ${age}`);
 });
+
+
 
 app.listen(port, () => console.log(`app listening on port ${port}`));

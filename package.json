@@ -4,12 +4,15 @@
   "description": "Backend fürs Boot Camp 2021",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest .",
     "start": "node src/index.js"
   },
   "author": "<Yupiel>",
   "license": "MIT",
   "dependencies": {
     "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "jest": "^27.2.3"
   }
 }
