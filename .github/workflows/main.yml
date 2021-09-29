@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    name: Deploy to Heroku
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker Build & Push to Docker Hub
+        uses: opspresso/action-docker@master
+        with:
+          args: --docker
+        env:
+          USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          PASSWORD: ${{ secrets.DOCKER_TOKEN }}
+          DOCKERFILE: Dockerfile
+          IMAGE_NAME: yupiel/bootcamp21-backend
+          TAG_NAME: latest
+          LATEST: true
+
+      # Deploy to Heroku Repository
+      - name: Deploy to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.6.8
+        with:
+          # This will be used for authentication. You can find it in your heroku homepage account settings
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          # Email that you use with heroku
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
+          # The appname to use for deploying/updating
+          heroku_app_name: bootcamp21-backend
+          # The branch that you would like to deploy to Heroku
+          branch: main
+          # Will deploy using Dockerfile in project root.
+          usedocker: true
+          # Type of heroku process (web, worker, etc). This option only makes sense when usedocker enabled
+          docker_heroku_process_type: web
