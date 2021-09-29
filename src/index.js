@@ -21,7 +21,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.get("/healthcheck", (req, res) => res.json(response(200, { message: "läuft" })));
 
