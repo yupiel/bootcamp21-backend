@@ -14,18 +14,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Docker Build & Push to Docker Hub
-        uses: opspresso/action-docker@master
-        with:
-          args: --docker
-        env:
-          USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          PASSWORD: ${{ secrets.DOCKER_TOKEN }}
-          DOCKERFILE: Dockerfile
-          IMAGE_NAME: yupiel/bootcamp21-backend
-          TAG_NAME: latest
-          LATEST: true
-
       # Deploy to Heroku Repository
       - name: Deploy to Heroku
         uses: AkhileshNS/heroku-deploy@v3.6.8
