@@ -10,7 +10,7 @@ const response = (statusCode, { message, error }) => {
     messageBuilder.error = error;
   }
 
-  return JSON.stringify(messageBuilder);
+  return messageBuilder;
 };
 
 module.exports = response;
